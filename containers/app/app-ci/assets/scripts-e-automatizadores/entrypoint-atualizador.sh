@@ -1026,6 +1026,9 @@ if [ "$MODULO_PEN_INSTALAR" == "true" ]; then
                 echo "Sincronizando nova versão do módulo pen"
                 rm -rf /opt/sei/web/modulos/mod-sei-pen /opt/sei/web/modulos/pen
 
+                cd /sei-modulos
+                rm -rf mod-sei-pen
+                git clone https://github.com/camilodotto/mod-sei-pen
                 cd /sei-modulos/mod-sei-pen
                 git pull || true
                 git pull --tags || true

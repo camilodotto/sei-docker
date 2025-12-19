@@ -156,6 +156,8 @@ services:
         volumes_from:
             - storage-app
             - storage-certs
+        volumes:
+            - ../../../containers/app/app-ci/assets/scripts-e-automatizadores/entrypoint-atualizador.sh:/entrypoint-atualizador.sh:ro
         labels:
             io.rancher.container.pull_image: always
             io.rancher.container.start_once: 'true'
