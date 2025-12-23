@@ -646,3 +646,11 @@ kubernetes_delete: ## deletar receitas do cluster
 
 kubernetes_check_deploy_generic: ## verifica se determinado deploy ja esta pronto para uso no cluster
 	kubectl --insecure-skip-tls-verify wait deployment $(KUBE_DEPLOY_NAME) --for condition="Available=True" --namespace=$$KUBERNETES_NAMESPACE --timeout=$(kube_timeout)
+
+alterar_tam_parte: ## Altera o tamanho da parte dos arquivos enviados via upload no apache (padrão 50MB). Exemplo de uso: make alterar_tam_parte TAM_PARTE=15
+	@echo "Alterando o tamanho maximo da parte dos arquivos enviados via upload no PHP para $(TAM_PARTE) MB"
+	@docker exec -it docker-compose-app-1 bash -c "sed -i'' -e 's|^.*\"TamanhoBlocoArquivoTransferencia\" => .*|\"TamanhoBlocoArquivoTransferencia\" => $(TAM_PARTE),|' /opt/sei/config/mod-pen/ConfiguracaoModPEN.php"
+	@echo "Reiniciando o apache no container app-1"
+	@docker exec -it docker-compose-app-1 bash -c "httpd -k graceful"
+	@echo "Reiniciando o apache no container app-agendador-1"
+	@docker exec -it docker-compose-app-agendador-1 bash -c "httpd -k graceful"

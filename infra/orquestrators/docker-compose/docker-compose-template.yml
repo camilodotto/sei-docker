@@ -25,6 +25,7 @@ services:
         volumes:
             - ${VOLUME_ARQUIVOSEXTERNOS_MOUNT}:/sei/arquivos_externos_sei/:rw
             - ${VOLUME_FONTES_MOUNT}:/opt:rw
+            - ../../../containers/app/app-ci/assets/conf/sei.ini:/etc/php.d/sei.ini:ro
             - ${VOLUME_CONTROLADOR_INSTALACAO_MOUNT}:/sei/controlador-instalacoes
             - ${VOLUME_CERTS_MOUNT}:/sei/certs
 
