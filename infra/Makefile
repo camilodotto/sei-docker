@@ -654,3 +654,12 @@ alterar_tam_parte: ## Altera o tamanho da parte dos arquivos enviados via upload
 	@docker exec -it docker-compose-app-1 bash -c "httpd -k graceful"
 	@echo "Reiniciando o apache no container app-agendador-1"
 	@docker exec -it docker-compose-app-agendador-1 bash -c "httpd -k graceful"
+
+alterar_timeout: ## Altera o timeout de conexão no PHP (padrão 300 segundos). Exemplo de uso: make alterar_timeout TIMEOUT=300
+	@echo "Alterando o timeout de conexão no PHP para $(TIMEOUT) segundos"
+	@docker exec -it docker-compose-app-1 bash -c "sed -i'' -e 's|^.*const WS_TIMEOUT_CONEXAO = .*|const WS_TIMEOUT_CONEXAO = $(TIMEOUT);|' /opt/sei/web/modulos/pen/rn/ProcessoEletronicoRN.php"
+	@docker exec -it docker-compose-app-1 bash -c "sed -i'' -e 's|^.*const TIMEOUT_PROCESSAMENTO_EVENTOS = .*|const TIMEOUT_PROCESSAMENTO_EVENTOS = $(TIMEOUT)000;|' /opt/sei/web/modulos/pen/rn/ProcessarPendenciasRN.php"
+	@echo "Reiniciando o apache no container app-1"
+	@docker exec -it docker-compose-app-1 bash -c "httpd -k graceful"
+	@echo "Reiniciando o apache no container app-agendador-1"
+	@docker exec -it docker-compose-app-agendador-1 bash -c "httpd -k graceful"
