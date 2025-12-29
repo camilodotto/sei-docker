@@ -304,6 +304,12 @@ services:
         labels:
             io.rancher.container.pull_image: always
             io.rancher.container.start_once: 'true'
+            com.docker-tc.enabled: '1'
+            com.docker-tc.limit: '100mbps'
+            com.docker-tc.delay: '10ms'
+            com.docker-tc.loss: '1%'
+            com.docker-tc.duplicate: '1%'
+            com.docker-tc.corrupt: '1%'
         environment:
         - APP_PROTOCOLO=${APP_PROTOCOLO}
         - APP_HOST=${APP_HOST}
@@ -447,10 +453,16 @@ services:
             - storage-app
             - storage-certs
         labels:
-          io.rancher.container.pull_image: always
-          io.rancher.sidekicks: storage-arquivosexternos,storage-fontes,app-atualizador
+            io.rancher.container.pull_image: always
+            io.rancher.sidekicks: storage-arquivosexternos,storage-fontes,app-atualizador
+            com.docker-tc.enabled: '1'
+            com.docker-tc.limit: '100mbps'
+            com.docker-tc.delay: '10ms'
+            com.docker-tc.loss: '1%'
+            com.docker-tc.duplicate: '1%'
+            com.docker-tc.corrupt: '1%'
 
-          traefik.enable: true
+            traefik.enable: true
 
           #traefik.http.routers.app.rule: Host(`${APP_HOST}`) && (PathPrefix(`/sei`) || PathPrefix(`/sip`) || PathPrefix(`/infra`)) #app-traefik
           #traefik.http.routers.app.entrypoints: websecure #app-traefik
